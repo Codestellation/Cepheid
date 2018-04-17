@@ -1,0 +1,18 @@
+<Project>
+    <Target
+        Name="GitSemVersion"
+        Condition="'$(Configuration)' == 'Release'"
+        BeforeTargets="GetAssemblyVersion;GenerateNuspec">
+        <GitSemVersionTask>
+            <Output 
+                PropertyName="Version"
+                TaskParameter="Standard" />
+            <Output 
+                PropertyName="InformationalVersion"
+                TaskParameter="Full" />
+            <Output 
+                PropertyName="PackageVersion"
+                TaskParameter="StandardWithDirty" />
+        </GitSemVersionTask>
+    </Target>
+</Project>

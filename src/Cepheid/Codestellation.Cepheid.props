@@ -1,0 +1,5 @@
+<Project>
+  <UsingTask 
+      TaskName="Codestellation.Cepheid.GitSemVersionTask"
+      AssemblyFile="Codestellation.Cepheid.dll" />
+</Project>
