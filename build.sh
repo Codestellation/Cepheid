@@ -1,26 +1,34 @@
 #!/bin/bash
 set -e
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 \"1.2.3\""
-    exit 1
-fi
+echo "====================================="
+echo "           Versioning                "
+echo "====================================="
+DESCRIBE=`git describe --abbrev=7 --first-parent --long --dirty --always`
+TAG=`echo $DESCRIBE | cut -d '-' -f 1 | cut -c 2-`
+PATCH=`echo $DESCRIBE | cut -d '-' -f 2`
+HASH=`echo $DESCRIBE | cut -d '-' -f 3 | cut -c 2-`
 
-VERSION=$1
+VERSION="$TAG.$PATCH"
+FULLVERSION="$VERSION-$HASH"
+echo "Version: $FULLVERSION"
 
-echo "Build version: " $VERSION
+echo "====================================="
+echo "              Build                  "
+echo "====================================="
+dotnet build ./src/ --configuration Release \
+                    /property:Version=$VERSION \
+                    /property:InformationalVersion=$FULLVERSION
 
 echo "====================================="
 echo "           Run tests                 "
 echo "====================================="
-dotnet test ./src/*.Tests/
+dotnet test ./src/*.Tests/ --configuration Release \
+                           --no-build
 
 echo "====================================="
 echo "        Create nuget packet          "
 echo "====================================="
 dotnet pack ./src/ --configuration Release \
                    --no-build \
-                   /property:Version=$VERSION \
-                   /property:AssemblyVersion=$VERSION \
-                   /property:FileVersion=$VERSION \
                    /property:PackageVersion=$VERSION
