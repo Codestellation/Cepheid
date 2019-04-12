@@ -1,8 +1,16 @@
 <Project>
+    <PropertyGroup
+        Condition="'$(Configuration)' == 'Release'">
+        <GetPackageVersionDependsOn>
+            GitSemVersion;
+            $(GetPackageVersionDependsOn)
+        </GetPackageVersionDependsOn>
+    </PropertyGroup>
+
     <Target
         Name="GitSemVersion"
         Condition="'$(Configuration)' == 'Release'"
-        BeforeTargets="GetAssemblyVersion;GenerateNuspec">
+        BeforeTargets="GetAssemblyVersion">
         <GitSemVersionTask>
             <Output 
                 PropertyName="Version"
