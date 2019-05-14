@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+function cut {
+  # Workaround for https://github.com/appveyor/ci/issues/1956
+  /bin/cut $@
+}
+
 echo "====================================="
 echo "           Versioning                "
 echo "====================================="
