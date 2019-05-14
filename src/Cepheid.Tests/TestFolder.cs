@@ -49,6 +49,12 @@ namespace Codestellation.Cepheid.Tests
         public void GitInit()
         {
             Exec("git", "init");
+
+            string name = SomeString();
+            string email = $"{SomeString()}@localhost";
+
+            Exec("git", $"config user.name '{name}'");
+            Exec("git", $"config user.email '{email}'");
         }
 
         public void GitAddAll()
